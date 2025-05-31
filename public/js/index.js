@@ -102,7 +102,7 @@ document.addEventListener('click', (e) => {
   const btn = e.target.closest('.btn--edit-review');
   if (!btn) return;
 
-  console.log('Edit button clicked!');
+  // console.log('Edit button clicked!');
 
   const reviewId = btn.dataset.reviewId;
   const reviewContent = btn.dataset.reviewContent;

@@ -17,7 +17,7 @@ exports.checkIfBooked = catchAsync(async(req, res, next)=> {
 
   const userId = req.user.id;
 
-  console.log(tourId);
+  // console.log(tourId);
   
   const booking = await Booking.findOne( {tour: tourId, user: userId} );
 

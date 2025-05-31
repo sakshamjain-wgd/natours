@@ -127,7 +127,7 @@ exports.createUser = (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-    console.log(req.params);
+    // console.log(req.params);
     const id = req.params.id * 1;
     const user = users.find(el => el.id === id);
     // if(id > users.length){
