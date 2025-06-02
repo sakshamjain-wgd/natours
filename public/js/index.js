@@ -5,6 +5,8 @@ import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
 import { createReview } from '../js/review';
 import { deleteReview } from '../js/review';
+import { showAlert } from './alerts';
+import axios from 'axios';
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
@@ -98,45 +100,71 @@ if (userPasswordForm)
 }
 
 
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.btn--edit-review');
-  if (!btn) return;
+document.addEventListener('DOMContentLoaded', () => {
+  const editBtns = document.querySelectorAll('.btn--edit-review');
 
-  // console.log('Edit button clicked!');
+  editBtns.forEach(btn => {
 
-  const reviewId = btn.dataset.reviewId;
-  const reviewContent = btn.dataset.reviewContent;
-  const reviewRating = btn.dataset.reviewRating;
+    btn.addEventListener('click', () => {
+      const reviewId = btn.dataset.reviewId;
+      const reviewContent = btn.dataset.reviewContent;
+      const reviewRating = btn.dataset.reviewRating;
 
-  const reviewDiv = btn.closest('.reviews__card');
-  reviewDiv.innerHTML = `
-    <textarea id="edit-review-text" class="form__input" rows="3">${reviewContent}</textarea>
-    <select id="edit-review-rating" class="form__input">
-      ${[1, 2, 3, 4, 5].map(num => `
-        <option value="${num}" ${num == reviewRating ? 'selected' : ''}>${num}</option>
-      `).join('')}
-    </select>
-    <button class="btn btn--small btn--green" id="save-review">Save</button>
-    <button class="btn btn--small btn--red" id="cancel-edit">Cancel</button>
-  `;
+      const card = btn.closest('.card'); 
+      const reviewCard = card.querySelector('.reviews__card');
 
-  document.getElementById('save-review').addEventListener('click', async () => {
-    const updatedText = document.getElementById('edit-review-text').value;
-    const updatedRating = document.getElementById('edit-review-rating').value;
+      if (!reviewCard) return;
 
-    try {
-      const res = await axios.patch(`http://127.0.0.1:3000/api/v1/reviews/${reviewId}`, {
-        review: updatedText,
-        rating: updatedRating
+      reviewCard.innerHTML = `
+        <form class="form">
+          <div class="form__group">
+            <textarea id="edit-review-text" class="form__input" rows="3">${reviewContent}</textarea>
+          </div>
+          <div class="form__group">
+            <label for="edit-review-rating">Rating</label>
+            <select id="edit-review-rating" class="form__input">
+              ${[1,2,3,4,5].map(r => `<option value="${r}" ${r == reviewRating ? 'selected' : ''}>${r}</option>`).join('')}
+            </select>
+          </div>
+          <button class="btn btn--edit-review" id="save-review">Save</button>
+          <button class="btn btn--danger" id="cancel-edit">Cancel</button>
+        </form>
+      `;
+
+      document.getElementById('save-review').addEventListener('click', async e => {
+        e.preventDefault();
+        const updatedText = document.getElementById('edit-review-text').value;
+        const updatedRating = document.getElementById('edit-review-rating').value;
+
+        try {
+          const res = await axios({
+            method: 'PATCH',
+            url: `/api/v1/reviews/${reviewId}`,
+            data: { 
+              review: updatedText,
+              rating: updatedRating
+            }
+          });
+
+          if (res.data.status === 'success'){
+            showAlert('success', 'Review Updated Successfully.')
+            location.reload();
+          }
+        } catch (err) {
+          console.error('Error: ', err.response || err);
+          showAlert('error', 'Failed to update review');
+        }
       });
 
-      if (res.data.status === 'success') location.reload();
-    } catch (err) {
-      alert('Failed to update review.');
-    }
-  });
+      document.getElementById('cancel-edit').addEventListener('click', e => {
+        e.preventDefault();
+        location.reload();
+      });
+    });
 
-  document.getElementById('cancel-edit').addEventListener('click', () => {
-    location.reload();
   });
 });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if(alertMessage)
+  showAlert('success', alertMessage, 20);

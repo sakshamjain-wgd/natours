@@ -46,7 +46,15 @@ exports.resizeUserPhoto = catchAsync(async(req, res, next) => {
         .toFile(`public/img/users/${req.file.filename}`)
 
     next();
-    })
+});
+
+exports.alerts = (req, res, next) => {
+    const {alert} = req.query;
+    if(alert === 'booking')
+        res.locals.alert = "Your booking was successful:). Please check your email for confirmation. If your booking doesn't appear here immediately, please come back later.";
+
+    next();
+}
 
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};

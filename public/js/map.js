@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const mapElement = document.getElementById('map');
   if (!mapElement) return;
 
-  const locations = JSON.parse(mapElement.dataset.locations); // Comes from backend
+  const locations = JSON.parse(mapElement.dataset.locations);
 
-  const map = L.map('map').setView([0, 0], 2); // default center
+  const map = L.map('map').setView([0, 0], 2);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
