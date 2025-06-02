@@ -48,14 +48,6 @@ exports.resizeUserPhoto = catchAsync(async(req, res, next) => {
     next();
 });
 
-exports.alerts = (req, res, next) => {
-    const {alert} = req.query;
-    if(alert === 'booking')
-        res.locals.alert = "Your booking was successful:). Please check your email for confirmation. If your booking doesn't appear here immediately, please come back later.";
-
-    next();
-}
-
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {};
     Object.keys(obj).forEach(el => {
