@@ -20,17 +20,19 @@ const bookingRouter = require('./routes/bookingRoutes');
 
 //Start Express App
 const app = express();
+app.enable('trust proxy');
 
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "https://js.stripe.com"],
+        scriptSrc: ["'self'", "https://js.stripe.com", "https://unpkg.com"],
         frameSrc: ["'self'", "https://js.stripe.com"],
         connectSrc: ["'self'", "https://api.stripe.com"],
-        styleSrc: ["'self'", "https://fonts.googleapis.com"],
+        styleSrc: ["'self'", "https://fonts.googleapis.com", "https://unpkg.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "https://*.tile.openstreetmap.org", "https://unpkg.com", "data:"]
       },
     },
   })
