@@ -1563,35 +1563,58 @@ body {
   }
 }
 
-/* Navigation Bar Responsive Adjustments */
-@media only screen and (max-width: 62.5em) { /* 1000px */
+/* Specific fix for 800px-1000px navigation layout */
+@media only screen and (max-width: 62.5em) and (min-width: 50em) {
   .header {
     flex-direction: row;
-    height: auto;
-    padding: 1rem 2rem;
+    padding: 0 3rem;
+    height: 8rem;
+    align-items: center;
   }
-  
-  .nav {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .nav--tours,
-  .nav--user {
-    flex: 0;
-    order: 1;
-    justify-content: flex-end;
-    margin-left: auto;
-  }
-  
-  .nav__el:not(:last-child) {
-    margin-right: 1.5rem;
-  }
-  
+
+  /* Logo positioning */
   .header__logo {
     order: 0;
-    margin-bottom: 0;
     margin-right: auto;
+    flex: 0 0 auto;
+  }
+
+  /* Main navigation (tours) */
+  .nav--tours {
+    order: 1;
+    flex: 1;
+    justify-content: center;
+    padding-left: 13rem;
+    margin: 0 2rem;
+  }
+
+  /* User navigation container */
+  .nav--user {
+    order: 2;
+    flex: 0 0 auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Individual user nav items */
+  .nav--user .nav__el {
+    margin-left: 1.5rem;
+    margin-right: 0;
+  }
+
+  /* Search bar positioning */
+  .nav__search {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25rem;
+    max-width: 30%;
+  }
+
+  /* Remove any unwanted margins */
+  .nav__el:not(:last-child) {
+    margin-right: 0;
   }
 }
 
@@ -1856,3 +1879,68 @@ body {
   }
 }
 
+/* Improved CTA Section Responsive Behavior */
+@media only screen and (max-width: 62.5em) { /* 1000px */
+  .cta {
+    padding: 6rem 3rem 6rem 16rem;
+  }
+  .cta__img {
+    height: 11rem;
+    width: 11rem;
+  }
+  .cta__content {
+    grid-template-rows: auto auto auto; /* Added row for button */
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+  .cta .btn {
+    grid-row: 3;
+    justify-self: start;
+    margin-top: 2rem;
+  }
+}
+
+@media only screen and (max-width: 50em) { /* 800px */
+  .cta {
+    padding: 5rem 3rem 5rem 14rem;
+  }
+  .cta__img {
+    height: 9rem;
+    width: 9rem;
+  }
+  .cta__img--logo {
+    transform: translate(-35%, -50%) scale(0.9);
+  }
+}
+
+@media only screen and (max-width: 37.5em) { /* 600px */
+  .cta {
+    padding: 4rem 2rem 4rem 10rem;
+  }
+  .cta__img {
+    height: 7rem;
+    width: 7rem;
+  }
+  .cta__text {
+    font-size: 1.6rem;
+  }
+}
+
+@media only screen and (max-width: 25em) { /* 400px */
+  .cta {
+    padding: 3rem 1.5rem 3rem 8rem;
+  }
+  .cta__img {
+    height: 6rem;
+    width: 6rem;
+  }
+  .cta__img--logo {
+    padding: 1.2rem;
+  }
+}
+
+/* Ensure images stay visible at all times */
+.cta__img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
